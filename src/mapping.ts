@@ -7,7 +7,6 @@ export function handleItemCanceled(event: ItemCanceled): void {
 }
 
 export function handleItemListed(event: ItemListed): void {
-  
 }
 
 export function handleItemSold(event: ItemSold): void {}

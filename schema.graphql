@@ -1,4 +1,4 @@
-type ExampleEntity @entity {
+type Marketplace @entity {
   id: ID!
   count: BigInt!
   owner: Bytes! # address
