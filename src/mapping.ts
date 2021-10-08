@@ -1,12 +1,13 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 
 import { FomoMarketplace, ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace"
-import { ExampleEntity } from "../generated/schema"
+import { ListedItem } from "../generated/schema"
 
 export function handleItemCanceled(event: ItemCanceled): void {
 }
 
 export function handleItemListed(event: ItemListed): void {
+  
 }
 
 export function handleItemSold(event: ItemSold): void {}

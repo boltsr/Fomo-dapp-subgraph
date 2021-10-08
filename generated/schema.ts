@@ -12,31 +12,36 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class ExampleEntity extends Entity {
+export class ListedItem extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
     this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("owner", Value.fromBytes(Bytes.empty()));
+    this.set("quantity", Value.fromI32(0));
+    this.set("pricePerItem", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("createdAtTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("isPrivate", Value.fromBoolean(false));
+    this.set("allowedAddress", Value.fromBytes(Bytes.empty()));
     this.set("nft", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save ExampleEntity entity without an ID");
+    assert(id != null, "Cannot save ListedItem entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save ExampleEntity entity with non-string ID. " +
+        "Cannot save ListedItem entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("ExampleEntity", id.toString(), this);
+      store.set("ListedItem", id.toString(), this);
     }
   }
 
-  static load(id: string): ExampleEntity | null {
-    return changetype<ExampleEntity | null>(store.get("ExampleEntity", id));
+  static load(id: string): ListedItem | null {
+    return changetype<ListedItem | null>(store.get("ListedItem", id));
   }
 
   get id(): string {
@@ -48,6 +53,15 @@ export class ExampleEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value!.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
+  }
+
   get count(): BigInt {
     let value = this.get("count");
     return value!.toBigInt();
@@ -57,13 +71,49 @@ export class ExampleEntity extends Entity {
     this.set("count", Value.fromBigInt(value));
   }
 
-  get owner(): Bytes {
-    let value = this.get("owner");
+  get quantity(): i32 {
+    let value = this.get("quantity");
+    return value!.toI32();
+  }
+
+  set quantity(value: i32) {
+    this.set("quantity", Value.fromI32(value));
+  }
+
+  get pricePerItem(): BigDecimal {
+    let value = this.get("pricePerItem");
+    return value!.toBigDecimal();
+  }
+
+  set pricePerItem(value: BigDecimal) {
+    this.set("pricePerItem", Value.fromBigDecimal(value));
+  }
+
+  get createdAtTimestamp(): BigInt {
+    let value = this.get("createdAtTimestamp");
+    return value!.toBigInt();
+  }
+
+  set createdAtTimestamp(value: BigInt) {
+    this.set("createdAtTimestamp", Value.fromBigInt(value));
+  }
+
+  get isPrivate(): boolean {
+    let value = this.get("isPrivate");
+    return value!.toBoolean();
+  }
+
+  set isPrivate(value: boolean) {
+    this.set("isPrivate", Value.fromBoolean(value));
+  }
+
+  get allowedAddress(): Bytes {
+    let value = this.get("allowedAddress");
     return value!.toBytes();
   }
 
-  set owner(value: Bytes) {
-    this.set("owner", Value.fromBytes(value));
+  set allowedAddress(value: Bytes) {
+    this.set("allowedAddress", Value.fromBytes(value));
   }
 
   get nft(): Bytes {

@@ -1,6 +1,11 @@
-type Marketplace @entity {
+type ListedItem @entity {
   id: ID!
+  tokenId: BigInt!
   count: BigInt!
-  owner: Bytes! # address
+  quantity: Int!
+  pricePerItem: BigDecimal!
+  createdAtTimestamp: BigInt!
+  isPrivate: Boolean!
+  allowedAddress: Bytes! # address
   nft: Bytes! # address
 }
