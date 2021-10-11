@@ -19,7 +19,7 @@ export class ListedItem extends Entity {
 
     this.set("tokenId", Value.fromBigInt(BigInt.zero()));
     this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("quantity", Value.fromI32(0));
+    this.set("quantity", Value.fromBigInt(BigInt.zero()));
     this.set("pricePerItem", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("createdAtTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("isPrivate", Value.fromBoolean(false));
@@ -71,13 +71,13 @@ export class ListedItem extends Entity {
     this.set("count", Value.fromBigInt(value));
   }
 
-  get quantity(): i32 {
+  get quantity(): BigInt {
     let value = this.get("quantity");
-    return value!.toI32();
+    return value!.toBigInt();
   }
 
-  set quantity(value: i32) {
-    this.set("quantity", Value.fromI32(value));
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
   }
 
   get pricePerItem(): BigDecimal {

@@ -9,20 +9,20 @@ export function handleItemCanceled(event: ItemCanceled): void {
 
 export function handleItemListed(event: ItemListed): void {
 
-  let id: string = ListedItem.length.toString();  
+  let id: string = event.params.tokenId.toString();
   let newItem = ListedItem.load(id);
   if (newItem === null) {
     newItem = new ListedItem(id);
-    newItem.id =(ListedItem.length+1).toString();
     newItem.allowedAddress = event.params.allowedAddress;
-    newItem.count = BigInt.fromI32(ListedItem.length+1);
-    newItem.createdAtTimestamp = event.block.timestamp;
+    newItem.count = BigInt.fromString(newItem.id);
+    newItem.createdAtTimestamp = event.params.startingTime;
     newItem.tokenId = event.params.tokenId;
-    newItem.quantity = event.params.quantity;
+    newItem.quantity = BigInt.fromString(event.params.quantity.toString());
     newItem.pricePerItem = BigDecimal.fromString(event.params.pricePerItem.toString());
     newItem.isPrivate = event.params.isPrivate;
     newItem.nft = event.params.nft;
   }
+  newItem.save();
 }
 
 export function handleItemSold(event: ItemSold): void {}

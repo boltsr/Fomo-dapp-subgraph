@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --access-token 6be15f25a7fc48a7a824f535007417c2 --debug --node https://api.studio.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ boltsr/Fomo",
+    "deploy": "graph deploy --product hosted-service boltsr/Fomo",
     "create-local": "graph create --node http://localhost:8020/ fomo",
     "remove-local": "graph remove --node http://localhost:8020/ fomo",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 fomo"
