@@ -1,10 +1,9 @@
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts"
 
-import { FomoMarketplace, ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace"
-import { ListedItem } from "../generated/schema"
-
+import { ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace"
+import { Global, ListedItem } from "../generated/schema"
+import {createOrUpdateGlobal, getOrCreateGlobal} from "./utils/helpers";
 export function handleItemCanceled(event: ItemCanceled): void {
-  
 }
 
 export function handleItemListed(event: ItemListed): void {
@@ -22,10 +21,13 @@ export function handleItemListed(event: ItemListed): void {
     newItem.isPrivate = event.params.isPrivate;
     newItem.nft = event.params.nft;
   }
+  // createOrUpdateGlobal('total', getOrCreateGlobal('total').value.plus(BigInt.fromI32(1)));
   newItem.save();
 }
 
-export function handleItemSold(event: ItemSold): void {}
+export function handleItemSold(event: ItemSold): void {
+
+}
 
 export function handleItemUpdated(event: ItemUpdated): void {}
 

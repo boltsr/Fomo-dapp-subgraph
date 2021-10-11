@@ -9,3 +9,9 @@ type ListedItem @entity {
   allowedAddress: Bytes! # address
   nft: Bytes! # address
 }
+
+type Global @entity {
+  id: ID!
+  name: String!
+  value: BigInt!
+}
