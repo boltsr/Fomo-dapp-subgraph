@@ -126,6 +126,60 @@ export class ListedItem extends Entity {
   }
 }
 
+export class SoldToken extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("tokenAddress", Value.fromString(""));
+    this.set("tokenAmount", Value.fromBigDecimal(BigDecimal.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SoldToken entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SoldToken entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SoldToken", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SoldToken | null {
+    return changetype<SoldToken | null>(store.get("SoldToken", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tokenAddress(): string {
+    let value = this.get("tokenAddress");
+    return value!.toString();
+  }
+
+  set tokenAddress(value: string) {
+    this.set("tokenAddress", Value.fromString(value));
+  }
+
+  get tokenAmount(): BigDecimal {
+    let value = this.get("tokenAmount");
+    return value!.toBigDecimal();
+  }
+
+  set tokenAmount(value: BigDecimal) {
+    this.set("tokenAmount", Value.fromBigDecimal(value));
+  }
+}
+
 export class Global extends Entity {
   constructor(id: string) {
     super();

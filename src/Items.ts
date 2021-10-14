@@ -1,7 +1,7 @@
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts"
+import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 
-import { ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace"
-import { Global, ListedItem } from "../generated/schema"
+import { ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace";
+import { Global, ListedItem } from "../generated/schema";
 import {createOrUpdateGlobal, getOrCreateGlobal} from "./utils/helpers";
 export function handleItemCanceled(event: ItemCanceled): void {
 
@@ -28,10 +28,12 @@ export function handleItemListed(event: ItemListed): void {
 }
 
 export function handleItemSold(event: ItemSold): void {
-
+  // createOrUpdateSoldToken(event.params.payToken.toString(), getOrCreateSoldToken(event.params.payToken.toString()).tokenAmount.plus(BigDecimal.fromString(event.params.payToken.toString())));
 }
 
-export function handleItemUpdated(event: ItemUpdated): void {}
+export function handleItemUpdated(event: ItemUpdated): void {
+  
+}
 
 export function handleOfferCanceled(event: OfferCanceled): void {}
 

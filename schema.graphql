@@ -9,15 +9,13 @@ type ListedItem @entity {
   allowedAddress: Bytes! # address
   nft: Bytes! # address
 }
-
+type SoldToken @entity {
+  id: ID!
+  tokenAddress: String!
+  tokenAmount: BigDecimal!
+}
 type Global @entity {
   id: ID!
   name: String!
   value: BigInt!
-}
-
-type TokenGlobal @entity {
-  id: ID!
-  name: String!
-  totalMintedAmount: BigInt!
 }
