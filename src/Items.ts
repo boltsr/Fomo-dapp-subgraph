@@ -1,10 +1,10 @@
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 
 import { ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace";
-import { Global, ListedItem } from "../generated/schema";
-import {createOrUpdateGlobal, getOrCreateGlobal} from "./utils/helpers";
-export function handleItemCanceled(event: ItemCanceled): void {
+import { Global, ListedItem, SoldToken } from "../generated/schema";
+import { createOrUpdateGlobal, getOrCreateGlobal, getOrCreateSoldToken } from "./utils/helpers";
 
+export function handleItemCanceled(event: ItemCanceled): void {
 }
 
 
@@ -20,7 +20,7 @@ export function handleItemListed(event: ItemListed): void {
     newItem.tokenId = event.params.tokenId;
     newItem.quantity = BigInt.fromString(event.params.quantity.toString());
     newItem.pricePerItem = BigDecimal.fromString(event.params.pricePerItem.toString());
-    newItem.isPrivate = event.params.isPrivate;
+    newItem.isPrivate = event.params.isPrivate; 
     newItem.nft = event.params.nft;
   }
   createOrUpdateGlobal('total', getOrCreateGlobal('total').value.plus(BigInt.fromI32(1)));
@@ -28,11 +28,12 @@ export function handleItemListed(event: ItemListed): void {
 }
 
 export function handleItemSold(event: ItemSold): void {
+  // let tokenAddress: string = event.params.payToken.toHexString();
+  // let newSold:SoldToken = getOrCreateSoldToken(tokenAddress);
   // createOrUpdateSoldToken(event.params.payToken.toString(), getOrCreateSoldToken(event.params.payToken.toString()).tokenAmount.plus(BigDecimal.fromString(event.params.payToken.toString())));
 }
 
-export function handleItemUpdated(event: ItemUpdated): void {
-  
+export function handleItemUpdated(event: ItemUpdated): void {  
 }
 
 export function handleOfferCanceled(event: OfferCanceled): void {}
