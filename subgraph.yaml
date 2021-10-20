@@ -12,7 +12,7 @@ dataSources:
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
-      language: wasm/assemblyscript
+      language: wasm/assemblyscript 
       entities:
         - ItemCanceled
         - ItemListed
@@ -50,9 +50,9 @@ dataSources:
     name: FomoNFT1155
     network: bsc
     source:
-      address: "0xCaEfFe6aD4e065A755671aB2BdCDa98549f3fd99"
+      address: "0x429b37477dfAD86369503567994b2e548E2F0e0d"
       abi: FomoNFT1155
-      startBlock: 8633542
+      startBlock: 10307994
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -81,3 +81,29 @@ dataSources:
         - event: URI(string,indexed uint256)
           handler: handleURI
       file: ./src/Token1155.ts
+  - kind: ethereum/contract
+    name: FomoNifty
+    network: bsc
+    source:
+      address: "0xeC6b1abf83f184cdb390C8F95C0d568a6A4dbd80"
+      abi: FomoNifty
+      startBlock: 10307994
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Minted
+      abis:
+        - name: FomoNifty
+          file: ./abis/FomoNifty.json
+      eventHandlers:
+        - event: Minted(uint256,address,string,address)
+          handler: handleMinted
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/Token721.ts

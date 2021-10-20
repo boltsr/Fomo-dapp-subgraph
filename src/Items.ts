@@ -2,7 +2,7 @@ import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 
 import { ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace";
 import { Global, ListedItem, SoldToken } from "../generated/schema";
-import { createOrUpdateGlobal, getOrCreateGlobal, getOrCreateSoldToken } from "./utils/helpers";
+import { createOrUpdateGlobal, getOrCreateGlobal, getOrCreateSoldToken, createOrUpdateSoldToken, toBigDecimal } from "./utils/helpers";
 
 export function handleItemCanceled(event: ItemCanceled): void {
 }
@@ -23,27 +23,46 @@ export function handleItemListed(event: ItemListed): void {
     newItem.isPrivate = event.params.isPrivate; 
     newItem.nft = event.params.nft;
   }
-  createOrUpdateGlobal('total', getOrCreateGlobal('total').value.plus(BigInt.fromI32(1)));
+  let newGlobal = getOrCreateGlobal('total');
+  createOrUpdateGlobal('total', newGlobal.value.plus(BigInt.fromI32(1)), newGlobal.totalTransaction.plus(BigInt.fromI32(1)));
   newItem.save();
 }
 
 export function handleItemSold(event: ItemSold): void {
-  // let tokenAddress: string = event.params.payToken.toHexString();
-  // let newSold:SoldToken = getOrCreateSoldToken(tokenAddress);
-  // createOrUpdateSoldToken(event.params.payToken.toString(), getOrCreateSoldToken(event.params.payToken.toString()).tokenAmount.plus(BigDecimal.fromString(event.params.payToken.toString())));
+  let payToken = event.params.payToken.toHexString().toString();
+  let newSold = getOrCreateSoldToken(payToken);
+  let totalValue = toBigDecimal(BigInt.fromString(event.params.price.toString())).times(BigDecimal.fromString(event.params.quantity.toString()));
+  createOrUpdateSoldToken(payToken, newSold.tokenAmount.plus(totalValue));
+  let newGlobal = getOrCreateGlobal('total');
+  createOrUpdateGlobal('total', newGlobal.value.plus(BigInt.fromI32(1)), newGlobal.totalTransaction.plus(BigInt.fromI32(1)));
 }
 
 export function handleItemUpdated(event: ItemUpdated): void {  
+  let newGlobal = getOrCreateGlobal('total');
+  createOrUpdateGlobal('total', newGlobal.value.plus(BigInt.fromI32(1)), newGlobal.totalTransaction.plus(BigInt.fromI32(1)));
 }
 
-export function handleOfferCanceled(event: OfferCanceled): void {}
+export function handleOfferCanceled(event: OfferCanceled): void {
+  let newGlobal = getOrCreateGlobal('total');
+  createOrUpdateGlobal('total', newGlobal.value.plus(BigInt.fromI32(1)), newGlobal.totalTransaction.plus(BigInt.fromI32(1)));
+}
 
-export function handleOfferCreated(event: OfferCreated): void {}
+export function handleOfferCreated(event: OfferCreated): void {
+  let newGlobal = getOrCreateGlobal('total');
+  createOrUpdateGlobal('total', newGlobal.value.plus(BigInt.fromI32(1)), newGlobal.totalTransaction.plus(BigInt.fromI32(1)));
+}
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {
+  let newGlobal = getOrCreateGlobal('total');
+  createOrUpdateGlobal('total', newGlobal.value.plus(BigInt.fromI32(1)), newGlobal.totalTransaction.plus(BigInt.fromI32(1)));
 
-export function handleUpdatePlatformFee(event: UpdatePlatformFee): void {}
+}
+
+export function handleUpdatePlatformFee(event: UpdatePlatformFee): void {
+
+}
 
 export function handleUpdatePlatformFeeRecipient(
   event: UpdatePlatformFeeRecipient
-): void {}
+): void {
+}

@@ -187,6 +187,7 @@ export class Global extends Entity {
 
     this.set("name", Value.fromString(""));
     this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("totalTransaction", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -231,6 +232,15 @@ export class Global extends Entity {
 
   set value(value: BigInt) {
     this.set("value", Value.fromBigInt(value));
+  }
+
+  get totalTransaction(): BigInt {
+    let value = this.get("totalTransaction");
+    return value!.toBigInt();
+  }
+
+  set totalTransaction(value: BigInt) {
+    this.set("totalTransaction", Value.fromBigInt(value));
   }
 }
 

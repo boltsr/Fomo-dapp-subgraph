@@ -18,6 +18,7 @@ type Global @entity {
   id: ID!
   name: String!
   value: BigInt!
+  totalTransaction: BigInt!
 }
 type Total1155 @entity {
   id: ID!

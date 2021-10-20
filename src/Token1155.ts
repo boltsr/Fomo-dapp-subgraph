@@ -19,7 +19,9 @@ export function handleTransferBatch(event: TransferBatch): void {
 
 export function handleTransferSingle(event: TransferSingle): void {
     let amount: BigInt = BigInt.fromString(event.params.value.toString());
-    createOrUpdateTotal1155('1155', getOrCreateTotal1155('1155').value.plus(amount));
+    if (event.params.from.toString().includes("0x0000000000000000")) {
+        createOrUpdateTotal1155('1155', getOrCreateTotal1155('1155').value.plus(amount));
+    }
 }
 
 export function handleURI(event: URI): void {}

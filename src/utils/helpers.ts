@@ -8,18 +8,20 @@ export function getOrCreateGlobal(name: string): Global {
     if (!global) {
       global = new Global(name);
       global.value = BigInt.fromI32(0);
+      global.totalTransaction = BigInt.fromI32(0);
       global.save();
     }
     return global as Global;
 }
-  
-export function createOrUpdateGlobal(name: string, value: BigInt): void {
+
+export function createOrUpdateGlobal(name: string, value: BigInt, total: BigInt): void {
     let global = getOrCreateGlobal(name);
     global.value = value;
+    global.totalTransaction = total
     global.save();
 }
 
-export function getOrCreateTotal1155(name: string): Total1155 {
+export function getOrCreateTotal1155(name: string): Total1155 { 
   let global = Total1155.load(name);
   if (!global) {
     global = new Total1155(name);
@@ -44,15 +46,15 @@ export function getOrCreateSoldToken(name: string): SoldToken {
   }
   return global as SoldToken;
 }
-// export function toBigDecimal(quantity: BigInt, decimals: i32 = 18): BigDecimal {
-//   return quantity.divDecimal(
-//     BigInt.fromI32(10)
-//       .pow(decimals as u8)
-//       .toBigDecimal()
-//   );
-// }
-// export function createOrUpdateSoldToken(name: string, value: BigDecimal): void {
-//   let global =  getOrCreateSoldToken(name);
-//   global.tokenAmount = value;
-//   global.save();
-// }
+export function toBigDecimal(quantity: BigInt, decimals: i32 = 18): BigDecimal {
+  return quantity.divDecimal(
+    BigInt.fromI32(10)
+      .pow(decimals as u8)
+      .toBigDecimal()
+  );
+}
+export function createOrUpdateSoldToken(name: string, value: BigDecimal): void {
+  let global =  getOrCreateSoldToken(name);
+  global.tokenAmount = value;
+  global.save();
+}
