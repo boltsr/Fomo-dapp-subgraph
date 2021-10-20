@@ -131,7 +131,7 @@ export class SoldToken extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("tokenAddress", Value.fromString(""));
+    this.set("tokenAddress", Value.fromBytes(Bytes.empty()));
     this.set("tokenAmount", Value.fromBigDecimal(BigDecimal.zero()));
   }
 
@@ -161,13 +161,77 @@ export class SoldToken extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get tokenAddress(): string {
+  get tokenAddress(): Bytes {
     let value = this.get("tokenAddress");
+    return value!.toBytes();
+  }
+
+  set tokenAddress(value: Bytes) {
+    this.set("tokenAddress", Value.fromBytes(value));
+  }
+
+  get tokenAmount(): BigDecimal {
+    let value = this.get("tokenAmount");
+    return value!.toBigDecimal();
+  }
+
+  set tokenAmount(value: BigDecimal) {
+    this.set("tokenAmount", Value.fromBigDecimal(value));
+  }
+}
+
+export class DailySoldToken extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("dayStamp", Value.fromBigInt(BigInt.zero()));
+    this.set("tokenAddress", Value.fromBytes(Bytes.empty()));
+    this.set("tokenAmount", Value.fromBigDecimal(BigDecimal.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save DailySoldToken entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DailySoldToken entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DailySoldToken", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DailySoldToken | null {
+    return changetype<DailySoldToken | null>(store.get("DailySoldToken", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
     return value!.toString();
   }
 
-  set tokenAddress(value: string) {
-    this.set("tokenAddress", Value.fromString(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get dayStamp(): BigInt {
+    let value = this.get("dayStamp");
+    return value!.toBigInt();
+  }
+
+  set dayStamp(value: BigInt) {
+    this.set("dayStamp", Value.fromBigInt(value));
+  }
+
+  get tokenAddress(): Bytes {
+    let value = this.get("tokenAddress");
+    return value!.toBytes();
+  }
+
+  set tokenAddress(value: Bytes) {
+    this.set("tokenAddress", Value.fromBytes(value));
   }
 
   get tokenAmount(): BigDecimal {

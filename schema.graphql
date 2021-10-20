@@ -11,7 +11,13 @@ type ListedItem @entity {
 }
 type SoldToken @entity {
   id: ID!
-  tokenAddress: String!
+  tokenAddress: Bytes!
+  tokenAmount: BigDecimal!
+}
+type DailySoldToken @entity {
+  id: ID!
+  dayStamp: BigInt!
+  tokenAddress: Bytes!
   tokenAmount: BigDecimal!
 }
 type Global @entity {

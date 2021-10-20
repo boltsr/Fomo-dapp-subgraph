@@ -1,7 +1,7 @@
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 import { ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../../generated/FomoMarketplace/FomoMarketplace"
-import { Global, ListedItem, SoldToken, Total1155 } from "../../generated/schema"
+import { Global, ListedItem, SoldToken, Total1155, DailySoldToken } from "../../generated/schema"
 
 export function getOrCreateGlobal(name: string): Global {
     let global = Global.load(name);
@@ -53,8 +53,25 @@ export function toBigDecimal(quantity: BigInt, decimals: i32 = 18): BigDecimal {
       .toBigDecimal()
   );
 }
-export function createOrUpdateSoldToken(name: string, value: BigDecimal): void {
+export function createOrUpdateSoldToken(name: string, value: BigDecimal, address: Bytes): void {
   let global =  getOrCreateSoldToken(name);
   global.tokenAmount = value;
+  global.tokenAddress = address;
+  global.save();
+}
+export function getOrCreateDailySoldToken(name: string): DailySoldToken {
+  let global = DailySoldToken.load(name);
+  if (!global) {
+    global = new DailySoldToken(name);
+    global.tokenAmount = BigDecimal.fromString("0");
+    global.save();
+  }
+  return global as DailySoldToken;
+}
+export function createOrUpdateDailySoldToken(name: string, value: BigDecimal, address: Bytes, timestamp: BigInt): void {
+  let global =  getOrCreateDailySoldToken(name);
+  global.tokenAmount = value;
+  global.tokenAddress = address;
+  global.dayStamp = timestamp;
   global.save();
 }

@@ -1,8 +1,8 @@
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 
 import { ItemCanceled, ItemListed, ItemSold, ItemUpdated, OfferCanceled, OfferCreated, OwnershipTransferred, UpdatePlatformFee, UpdatePlatformFeeRecipient } from "../generated/FomoMarketplace/FomoMarketplace";
-import { Global, ListedItem, SoldToken } from "../generated/schema";
-import { createOrUpdateGlobal, getOrCreateGlobal, getOrCreateSoldToken, createOrUpdateSoldToken, toBigDecimal } from "./utils/helpers";
+import { Global, ListedItem, SoldToken, DailySoldToken } from "../generated/schema";
+import { createOrUpdateGlobal, createOrUpdateSoldToken, getOrCreateGlobal, getOrCreateSoldToken, toBigDecimal, getOrCreateDailySoldToken, createOrUpdateDailySoldToken } from "./utils/helpers";
 
 export function handleItemCanceled(event: ItemCanceled): void {
 }
@@ -29,10 +29,17 @@ export function handleItemListed(event: ItemListed): void {
 }
 
 export function handleItemSold(event: ItemSold): void {
-  let payToken = event.params.payToken.toHexString().toString();
+  let payToken = event.params.payToken.toHexString();
   let newSold = getOrCreateSoldToken(payToken);
   let totalValue = toBigDecimal(BigInt.fromString(event.params.price.toString())).times(BigDecimal.fromString(event.params.quantity.toString()));
-  createOrUpdateSoldToken(payToken, newSold.tokenAmount.plus(totalValue));
+  createOrUpdateSoldToken(payToken, newSold.tokenAmount.plus(totalValue), event.params.payToken);
+
+  let timestamp = event.block.timestamp.toI32();
+  let dayId = timestamp/86400;
+  let dayStartTimestamp = dayId * 86400;
+  let dailyId = payToken + '_' + dayId.toString();
+  let newDailySold = getOrCreateDailySoldToken(dailyId);
+  createOrUpdateDailySoldToken(dailyId, newDailySold.tokenAmount.plus(totalValue), event.params.payToken, BigInt.fromI32(dayStartTimestamp));
   let newGlobal = getOrCreateGlobal('total');
   createOrUpdateGlobal('total', newGlobal.value.plus(BigInt.fromI32(1)), newGlobal.totalTransaction.plus(BigInt.fromI32(1)));
 }
